@@ -56,12 +56,25 @@ export default function App() {
   return (
     <>
       <NavBar>
-        <Logo />
         <Search />
         <NumResults movies={movies} />
       </NavBar>
-      <Main movies={movies} />
+      <Main>
+        <ListBox>
+          <MoviesList movies={movies} />
+        </ListBox>
+        <WatchedBox />
+      </Main>
     </>
+  );
+}
+
+function NavBar({ children }) {
+  return (
+    <nav className="nav-bar">
+      <Logo />
+      {children}
+    </nav>
   );
 }
 
@@ -71,14 +84,6 @@ function Logo() {
       <span role="img">🍿</span>
       <h1>usePopcorn</h1>
     </div>
-  );
-}
-
-function NumResults({ movies }) {
-  return (
-    <p className="num-results">
-      Found <strong>{movies.length}</strong> results
-    </p>
   );
 }
 
@@ -95,20 +100,19 @@ function Search() {
   );
 }
 
-function NavBar({ children }) {
-  return <nav className="nav-bar">{children}</nav>;
-}
-
-function Main({ movies }) {
+function NumResults({ movies }) {
   return (
-    <main className="main">
-      <ListBox movies={movies} />
-      <WatchedBox />
-    </main>
+    <p className="num-results">
+      Found <strong>{movies.length}</strong> results
+    </p>
   );
 }
 
-function ListBox({ movies }) {
+function Main({ children }) {
+  return <main className="main">{children}</main>;
+}
+
+function ListBox({ children }) {
   const [isOpen1, setIsOpen1] = useState(true);
 
   return (
@@ -120,7 +124,7 @@ function ListBox({ movies }) {
         {isOpen1 ? "–" : "+"}
       </button>
 
-      {isOpen1 && <MoviesList movies={movies} />}
+      {isOpen1 && children}
     </div>
   );
 }
